@@ -67,7 +67,7 @@ class VoteRepository extends AbstractRepository {
     }
 
     public function deleteOldVotesByPollId($poll_id, $votesToDelete) {
-    	$prepared = $this->prepare('DELETE FROM `' . Utils::table('vote') . '` WHERE poll_id = ? ORDER BY `poll_id` ASC LIMIT ' . $votesToDelete);
+    	$prepared = $this->prepare('DELETE FROM `' . Utils::table('vote') . '` WHERE poll_id = ? GROUP BY poll_id ORDER BY poll_id ASC LIMIT ' . $votesToDelete);
 
         return $prepared->execute([$poll_id]);
     }

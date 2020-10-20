@@ -56,17 +56,25 @@ if (is_file(CONF_FILENAME)) {
 
     // Connection to database
     $doctrineConfig = new Configuration();
-    $connectionParams = [
-        'dbname' => DB_NAME,
-        'user' => DB_USER,
-        'password' => DB_PASSWORD,
-        'host' => DB_HOST,
-        'driver' => DB_DRIVER,
-        'charset' => DB_DRIVER === 'pdo_mysql' ? 'utf8mb4' : 'utf8',
-    ];
 
-    if (DB_DRIVER === 'pdo_sqlite') {
-        $connectionParams['path'] = ROOT_DIR . '/test_database.sqlite';
+    // You can optionally supply your own connection params by settin CONNECTION_PARAMS in
+    // 'app/inc/config.php'. This is useful if you want to supply custom param keys such as
+    // 'sslmode', 'sslrootcert', 'sslcert' and so on.
+    if (isset($CONNECTION_PARAMS)) {
+        $connectionParams = $CONNECTION_PARAMS;
+    } else {
+        $connectionParams = [
+            'dbname' => DB_NAME,
+            'user' => DB_USER,
+            'password' => DB_PASSWORD,
+            'host' => DB_HOST,
+            'driver' => DB_DRIVER,
+            'charset' => DB_DRIVER === 'pdo_mysql' ? 'utf8mb4' : 'utf8',
+        ];
+
+        if (DB_DRIVER === 'pdo_sqlite') {
+            $connectionParams['path'] = ROOT_DIR . '/test_database.sqlite';
+        }
     }
 
     try {

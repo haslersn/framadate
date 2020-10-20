@@ -131,7 +131,7 @@ function path_for_datepicker_locale($lang) {
  * @param string $pattern
  * @return string
  */
-function smarty_modifier_date_format_intl(DateTime $date, $pattern) {
+function smarty_modifier_date_format_intl(DateTime $date = null, $pattern) {
     return date_format_intl($date, $pattern);
 }
 
