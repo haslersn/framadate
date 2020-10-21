@@ -17,7 +17,15 @@ class VoteRepository extends AbstractRepository {
         $prepared = $this->prepare('SELECT * FROM ' . Utils::table('vote') . ' WHERE poll_id = ? ORDER BY id');
         $prepared->execute([$poll_id]);
 
-        return $prepared->fetchAll();
+        return array_map(function($vote) {
+            if (property_exists($vote, 'uniqid')) {
+                if (!property_exists($vote, 'uniqId')) {
+                    $vote->uniqId = $vote->uniqid;
+                }
+                unset($vote->uniqid);
+            }
+            return $vote;
+        }, $prepared->fetchAll());
     }
 
     /**

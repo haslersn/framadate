@@ -161,9 +161,9 @@ class PollRepository extends AbstractRepository {
 
         $request  = "";
         $request .= "SELECT p.*,";
-        $request .= "    (SELECT count(1) FROM " . Utils::table('vote') . " v WHERE p.id=v.poll_id) votes";
+        $request .= "    (SELECT count(*) FROM " . Utils::table('vote') . " v WHERE p.id=v.poll_id) votes";
         $request .= " FROM " . Utils::table('poll') . " p";
-        $request .= " WHERE 1";
+        $request .= " WHERE 1=1";
 
         $values = [];
 
@@ -189,7 +189,7 @@ class PollRepository extends AbstractRepository {
         }
 
         $request .= "  ORDER BY p.title ASC";
-        $request .= "  LIMIT :start, :limit";
+        $request .= "  LIMIT :limit OFFSET :start";
 
         $prepared = $this->prepare($request);
 
@@ -229,12 +229,12 @@ class PollRepository extends AbstractRepository {
     public function count($search = null) {
         // Total count
         $prepared = $this->prepare('
-SELECT count(1) nb
+SELECT count(*) nb
   FROM ' . Utils::table('poll') . ' p
- WHERE (:id = "" OR p.id LIKE :id)
-   AND (:title = "" OR p.title LIKE :title)
-   AND (:name = "" OR p.admin_name LIKE :name)
- ORDER BY p.title ASC');
+ WHERE (:id = \'\' OR p.id LIKE :id)
+   AND (:title = \'\' OR p.title LIKE :title)
+   AND (:name = \'\' OR p.admin_name LIKE :name)
+ GROUP BY p.title ORDER BY p.title ASC');
 
         $poll = $search === null ? '' : $search['poll'] . '%';
         $title = $search === null ? '' : '%' . $search['title'] . '%';
