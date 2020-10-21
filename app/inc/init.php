@@ -37,7 +37,7 @@ define('CONF_FILENAME', ROOT_DIR . '/app/inc/config.php');
 require_once __DIR__ . '/constants.php';
 
 if (is_file(CONF_FILENAME)) {
-    @include_once __DIR__ . '/config.php';
+    include_once __DIR__ . '/config.php';
 
     // Connection to database
     $connect = new FramaDB(DB_CONNECTION_STRING, DB_USER, DB_PASSWORD);

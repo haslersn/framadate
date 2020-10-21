@@ -78,7 +78,7 @@ class InstallService {
      * @return \PDO
      */
     function connectTo($connectionString, $user, $password) {
-        $pdo = @new \PDO($connectionString, $user, $password);
+        $pdo = new \PDO($connectionString, $user, $password);
         $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         return $pdo;
@@ -98,7 +98,7 @@ class InstallService {
      * @param $content
      */
     function writeToFile($content) {
-        return @file_put_contents(CONF_FILENAME, $content);
+        return file_put_contents(CONF_FILENAME, $content);
     }
 
     /**
